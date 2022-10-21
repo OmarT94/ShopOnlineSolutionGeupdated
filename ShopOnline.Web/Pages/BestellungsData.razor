@@ -1,0 +1,80 @@
+﻿@page "/bestellung"
+@using ShopOnline.Api.Entities
+@inject HttpClient client
+@inject IJSRuntime js
+@*<h3>Baha</h3>*@
+<h1>Ommmmar</h1>
+<small>Sie können hier Manuell die Bestellung eingeben oder bearbeiten</small>
+<div class="from-group">
+    <a class=" btn btn-success" href="bestellung/create"><i class="oi oi-plus"></i>Create New </a>
+</div>
+@if (bestellung== null)
+{
+<text>Loading.........</text>
+}
+else if (bestellung.Length ==0)
+{
+    <text>Keine Bestellungen</text>
+}
+else
+{
+    <table class="table teble-striped">
+        <thead>
+            <tr>
+                @*<th>Id</th>*@
+                <th>Bestellungsnummer</th>
+                <th>Ist storniert</th>
+                <th>Kunden ID</th>
+                <th>Bestellt Am</th>
+                <th>Product Menge</th>
+                <th>Versandkosten</th>
+                <th>SummeOhneMwSt</th>
+                <th>Mwst</th>
+                <th>Summe</th>
+                <th>Gesamtesumme</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (BestellungToAddDto bestell in bestellung)
+            {
+                <tr>
+                    @*<td>@bestell.Id</td>*@
+                    <td>@bestell.BestellNummer</td>
+                    <td>@bestell.IstStorniert</td>
+                    <td>@bestell.KundenID</td>
+                    <td>@bestell.BestelltAm</td>
+                    <td>@bestell.ProductMenge</td>
+                    <td>@bestell.VersandKosten</td>
+                    <td>@bestell.SummeOhneMwSt</td>
+                    <td>@bestell.MwSt</td>
+                    <td>@bestell.Summe</td>
+                    <td>@bestell.GesamtSumme</td>
+                    <td>
+                        <a class="btn btn-success" href="bestellung/edit/@bestell.Id">Bearbeiten</a>
+                        <div class="card-footer alert-info text-center"></div>
+                        <button class="btn btn-danger"@onclick="@(()=>Delete(bestell.Id))">Löschen</button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code{
+    BestellungToAddDto [] bestellung{ get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        bestellung = await client.GetFromJsonAsync<BestellungToAddDto[]>("api/bestellung");
+    }
+
+    async Task Delete(int id)
+    {
+        var bestell = bestellung.First(x => x.Id == id);
+        if(await js.InvokeAsync<bool>("confirm",$"Möchten Sie Sicher die Bestellung löschen {bestell.BestelltAm} 's({bestell.BestellNummer})Record?"))
+        {
+            await client.DeleteAsync($"api/bestellung/{id}");
+            await OnInitializedAsync();
+        }
+    }
+}

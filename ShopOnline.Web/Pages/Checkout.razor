@@ -1,0 +1,69 @@
+﻿@page "/Checkout"
+@inherits CheckoutBase
+
+<h3>Checkout</h3>
+  <div class="row">
+    <div class="col-md-6">
+    <h4 class="mb-2">Payment Method</h4>
+    <div id="smart-button-container">
+        <div style="text-align: center"><label for="description"> </label><input type="text" name="descriptionInput" id="description" @bind="PaymentDescription"></div>
+        <p id="descriptionError" style="visibility: hidden; color:red; text-align: center;">Please enter a description</p>
+        <div style="text-align: center"><label for="amount"> </label><input name="amountInput" type="number" id="amount" @bind="PaymentAmount"><span> EUR</span></div>
+        <p id="priceLabelError" style="visibility: hidden; color:red; text-align: center;">Please enter a price</p>
+        <div id="invoiceidDiv" style="text-align: center; display: none;"><label for="invoiceid"> </label><input name="invoiceid" maxlength="127" type="text" id="invoiceid" value=""></div>
+        <p id="invoiceidError" style="visibility: hidden; color:red; text-align: center;">Please enter an Invoice ID</p>
+        <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
+    </div>
+    </div>
+
+  @* <div class="row">
+    <div class="col-md-6" style="display:@DisplayButtons">
+        <h4 class="mb-2">Payment Method</h4>
+        <div id="smart-button-container">
+            <input type="hidden" name="descriptionInput" id="description" @bind="PaymentDescription" />
+            <input name="amountInput" type="hidden" id="amount" @bind="PaymentAmount">
+            <div style="text-align: center; margin-top: 0.625rem;" id="paypal-button-container"></div>
+        </div>
+    </div>*@
+
+  @if(ShoppingCartItems== null)
+{
+    <DisplaySpinner/>
+}
+else
+{
+    <div class="col-md-6">
+
+        <h4 class="mb-2">Payment Summary</h4>
+            @if(ShoppingCartItems.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in ShoppingCartItems)
+                        {
+                           <tr>
+                               <td>@item.Qty x @item.ProductName</td>
+                               <td>@item.TotalPrice.ToString("C")</td>
+                           </tr> 
+                        }
+                        <tr>
+                            <td><b>Total</b></td>
+                            <td><b>@PaymentAmount.ToString("C")</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+               <p>You currently have no items in your shopping cart</p> 
+            }
+
+    </div>
+}
+ </div>

@@ -1,0 +1,27 @@
+﻿@page "/bestellung/edit/{Id:int}"
+@using ShopOnline.Api.Entities
+@inject HttpClient client
+@inject IJSRuntime js
+@inject NavigationManager uriHelper
+
+<h3>EditBestellung</h3>
+
+<Form ButtonText="Update" bestellung="bestellungToAddDto"
+    OnValidSubmit="@EditBestellungg"/>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    BestellungToAddDto bestellungToAddDto = new BestellungToAddDto();
+    protected async override Task OnParametersSetAsync()
+    {
+        bestellungToAddDto = await client.GetFromJsonAsync<BestellungToAddDto>($"api/bestellung/{Id}");
+    }
+
+    async Task EditBestellungg()
+    {
+        await client.PostAsJsonAsync("api/bestellung", bestellungToAddDto);
+        await js.InvokeVoidAsync("alert", $"Updated Successfuly!");
+        uriHelper.NavigateTo("bestellung");
+    }
+}

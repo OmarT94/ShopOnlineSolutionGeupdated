@@ -1,0 +1,19 @@
+﻿@page "/bestellung/create"
+@inject HttpClient client
+@inject NavigationManager uriHelper
+@using ShopOnline.Api.Entities
+
+<Form ButtonText="Create  Bestellung" bestellung="bestellungg"
+                                     OnValidSubmit="@CreateBestellungManuell" />
+
+
+
+
+@code {
+    BestellungToAddDto bestellungg = new BestellungToAddDto();
+    async Task CreateBestellungManuell()
+    {
+        await client.PostAsJsonAsync("api/bestellung", bestellungg);
+        uriHelper.NavigateTo("bestellung");
+    }
+}

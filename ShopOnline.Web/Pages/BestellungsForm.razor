@@ -1,0 +1,99 @@
+﻿@using ShopOnline.Api.Entities
+<EditForm Model="@bestellung" OnValidSubmit="@OnValidSubmit">
+    <div class="form-group">
+        <label>BestellungsNummer:</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.BestellNummer" />
+            <ValidationMessage For="@(() => bestellung.BestellNummer)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>Ist Storniert :</label>
+        <div>
+            <InputText @bind-attributes="@bestellung.IstStorniert" />
+            <ValidationMessage For="@(() => bestellung.IstStorniert)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>Bestellt Am :</label>
+        <div>
+            <InputDate @bind-Value="@bestellung.BestelltAm" />
+            <ValidationMessage For="@(() => bestellung.BestelltAm)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>Produkt Menge :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.ProductMenge" />
+            <ValidationMessage For="@(() => bestellung.ProductMenge)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>Versandkosten :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.VersandKosten" />
+            <ValidationMessage For="@(() => bestellung.VersandKosten)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>SummeOhneMwSt :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.SummeOhneMwSt" />
+            <ValidationMessage For="@(() => bestellung.SummeOhneMwSt)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>MwSt :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.MwSt" />
+            <ValidationMessage For="@(() => bestellung.MwSt)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>Summe :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.SummeOhneMwSt" />
+            <ValidationMessage For="@(() => bestellung.Summe)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label>GesamtSumme :</label>
+        <div>
+            <InputNumber @bind-Value="@bestellung.GesamtSumme" />
+            <ValidationMessage For="@(() => bestellung.GesamtSumme)" />
+
+        </div>
+    </div>
+    &nbsp;
+    <div class="form-group ">
+    </div>
+    &nbsp;
+
+    <button type="submit" class="btn btn-success">
+        @ButtonText
+    </button>
+
+</EditForm>
+
+@code {
+
+    [Parameter] public BestellungToAddDto bestellung{ get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save Bestellung";
+    [Parameter] public EventCallback OnValidSubmit{ get; set; }
+}
